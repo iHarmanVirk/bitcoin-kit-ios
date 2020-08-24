@@ -50,5 +50,17 @@ extension TransactionCreator: ITransactionCreator {
         try processAndSend(transaction: transaction)
         return transaction
     }
+    
+    func signTransaction(to address: String, value: Int, feeRate: Int, senderPay: Bool, pluginData: [UInt8: IPluginData] = [:]) throws -> FullTransaction {
+        let transaction = try transactionBuilder.buildTransaction(
+                toAddress: address,
+                value: value,
+                feeRate: feeRate,
+                senderPay: senderPay,
+                pluginData: pluginData
+        )
 
+        return transaction
+    }
+    
 }

@@ -179,7 +179,16 @@ extension BitcoinCore {
         let toAddress = try addressConverter.convert(keyHash: hash, type: scriptType)
         return try transactionCreator.create(to: toAddress.stringValue, value: value, feeRate: feeRate, senderPay: true, pluginData: [:])
     }
-
+    
+    func signTransaction(to address: String, value: Int, feeRate: Int, pluginData: [UInt8: IPluginData] = [:]) throws -> FullTransaction {
+        do {
+            return try transactionCreator.create(to: address, value: value, feeRate: feeRate, senderPay: true, pluginData: pluginData)
+        } catch {
+            errorStorage.add(sendError: error)
+            throw error
+        }
+    }
+    
     func redeem(from unspentOutput: UnspentOutput, to address: String, feeRate: Int) throws -> FullTransaction {
         try transactionCreator.create(from: unspentOutput, to: address, feeRate: feeRate)
     }
